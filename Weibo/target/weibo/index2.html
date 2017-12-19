@@ -1,0 +1,326 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>系列</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        /*body*/
+        body{
+            background-color: #B4DAF0;
+        }
+        /*body end*/
+
+        /*nav header*/
+        .nav-top{
+            background-color: white;
+            height:50px;
+            width:100%;
+            overflow: hidden;
+            position: fixed;
+            top:0;
+            left: 0;
+            opacity: 0.98;
+        }
+        .nav-top #logo{
+            display: inline-block;
+            width:170px;
+            float: left;
+            text-align: center;
+            background-image: url(images/logo.jpg);
+            background-repeat: no-repeat;
+            background-size: 70%;
+            background-position: center;
+            margin-top:2px;
+        }
+
+        .nav-top > ul{
+            list-style: none;
+            width: 950px;
+            margin: 0 auto;
+            height: 50px;
+            /*margin-left: 200px;*/
+        }
+        .nav-top li{
+            float: left;
+            margin:0 10px;
+            height:50px;
+            line-height: 50px;
+        }
+        @media screen and (max-width: 1300px) { /*当屏幕尺寸小于1300px时，应用下面的CSS样式*/
+            .nav-top #search{
+                margin-left: 150px;
+            }
+            .nav-top input{
+                /*margin-top: 5px;*/
+                display: inline-block;
+                height: 28px;
+                line-height: 28px;
+                width:200px;
+                margin:5px 60px 0 0;
+            }
+        }
+
+        @media screen and (min-width: 1300px) { /*当屏幕尺寸大于1300px时，应用下面的CSS样式*/
+            .nav-top #search{
+                margin-left: 0;
+            }
+            .nav-top input{
+                /*margin-top: 5px;*/
+                display: inline-block;
+                height: 28px;
+                line-height: 28px;
+                width:350px;
+                margin:5px 60px 0 0;
+            }
+        }
+
+        .nav-top a{
+            display: block;
+            height:50px;
+            line-height: 50px;
+            text-decoration:none;
+            font-weight: 500;
+            color: #585858;
+        }
+        .nav-top a:hover{
+            color: #ff6412;
+        }
+        /*nav header end*/
+
+        /*main*/
+        .main{
+            width:950px;
+            margin:50px auto;
+        }
+
+        /*main left nav*/
+        .nav{
+            width:150px;
+            /*float: left;*/
+            position: fixed;
+            top:60px;
+            bottom:0;
+            /*margin-top: 50px;*/
+            background-color: #93C5E2;
+            text-indent: 1em;
+            line-height: 2em;
+            /*height: 800px;*/
+            /*opacity: 0.8;*/
+        }
+
+        .nav>ul{
+            list-style: none;
+        }
+
+        .nav a{
+            text-decoration:none;
+            color:white;
+            display: block;
+        }
+
+        .nav a:hover{
+            background-color: #B4DAF0;
+        }
+        /*main left nav end*/
+
+        /* main content right*/
+        .main > .right{
+            float: right;
+            position: fixed;
+            /*left:50%;*/
+            transform:  translate(660px,0);
+            top:60px;
+            bottom:0;
+            width:270px;
+            background-color: #fff;
+            padding:10px;
+        }
+        /* main content right end*/
+
+        /* main content list*/
+        .main>.lists{
+            width: 500px;
+            overflow: hidden;
+            margin-left: 150px;
+        }
+
+        .item{
+            background-color: #fff;
+            padding:30px;
+            margin-top: 10px;
+            height:140px;
+        }
+
+        .item > .image{
+            width:200px;
+            height:140px;
+            float: left;
+
+        }
+
+        .item > h4{
+            margin-left: 210px;
+        }
+
+        .item > span{
+            font-size: 12px;
+            color: #a4a4a4;
+            margin-left: 10px;
+        }
+
+        .item > p{
+            /*margin-top: 5px;*/
+            margin-left: 210px;
+            font-size: 14px;
+            line-height: 22px;
+            /*text-align: justify;*/
+        }
+
+        .pagenation-wrapper{
+            padding:20px 0 10px 0;
+        }
+
+        .pagenation{
+            list-style: none;
+            width: 500px;
+            margin-left: 180px;
+        }
+
+        .pagenation li{
+            float:left;
+        }
+
+        .pagenation a{
+            text-decoration: none;
+            display: inline-block;
+            color:black;
+            height:35px;
+            line-height: 35px;
+            text-align: center;
+            padding:0 14px;
+            background-color: #ffffff;
+            margin-right: 1px;
+            font-size: 15px;
+        }
+
+        .pagenation a.current{
+            background-color: #93C5E2;
+        }
+        /* main content list end*/
+
+
+
+    </style>
+</head>
+<body>
+<div class="nav-top">
+    <a id="logo"></a>
+    <ul>
+        <li id="search">
+            <form><label for="search_input"></label><input id="search_input" name="search" placeholder="大家正在搜：陈赫"/></form>
+        </li>
+        <li><a href="#">休闲娱乐</a></li>
+        <!--<li><a href="#">视频</a></li>-->
+        <!--<li><a href="#">发现</a></li>-->
+        <!--<li><a href="#">游戏</a></li>-->
+        <!--<li><a href="#">不怕老婆的灰太狼</a></li>-->
+    </ul>
+</div>
+
+
+<div class="main">
+    <div class="nav">
+        <ul>
+            <li><a href="index.html">国产自拍</a></li>
+            <li><a href="index2.html">日韩系列</a></li>
+            <li><a href="index3.html">欧美帝国</a></li>
+        </ul>
+    </div>
+
+    <div class="right">
+        <div>
+            （暂定做推荐）其他版块儿其他版块儿其他版块儿其他版块儿其他版块儿其他版块儿
+        </div>
+    </div>
+    <div class="lists">
+        <div class="item">
+            <img class="image" src="images/head02.jpg"/>
+            <h4>董敏笛子</h4>
+            <span> 今天 11:02 来自 网易云音乐 </span>
+            <p>
+                倘若你曾思索过自己的坎坷人生，又抑或尝试去探寻自己的前世来生一个这样的自己……
+            </p>
+        </div>
+    </div>
+
+    <div class="pagenation-wrapper">
+        <ul class="pagenation">
+            <li><a href="#">首页</a></li>
+            <li><a href="#">上一页</a></li>
+            <li><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">下一页</a></li>
+            <li><a href="#">尾页</a></li>
+        </ul>
+    </div>
+
+
+</div>
+
+<script type="text/javascript" src="jquery1.9.0.js"></script>
+<script type="text/javascript" src="Context.js"></script>
+<script>
+    var index = 0;
+    var type = 1;
+    var itemsWrapper = $(".lists");
+    var pagenation = $(".pagenation");
+    var items = "";
+    var pages = "";
+
+
+    function query(page){
+        //var formParam = $("#form1").serialize();//序列化表格内容为字符串
+        $.ajax({
+            type: "GET",
+            url:pageContext.base+pageContext.url+type + "/page/"+page,
+            success: function(data,textStatus){
+                items = "";
+                pages = "";
+                for(index = 0; index < data.items.length;index++){
+                    items += '<div class="item" onclick="show('+'\'/v2/'+data.items[index].id+"/"+data.items[index].videoLocalName+'\')">'+
+                    '<img class="image" src="'+pageContext.base+'/v2/'+data.items[index].id+"/"+data.items[index].id+'.jpg"/>'+
+                    '<h4>'+(data.items[index].videoName).substring(0,10)+(data.items[index].videoName.length > 10?'......':'')+'</h4>'+
+                    '<span>'+data.items[index].uploadTime+' 访问 '+data.items[index].visitTimes+ '</span>'+
+                    '<p>'+data.items[index].videoName+'</p>'+
+                    '</div>';
+                }
+
+                itemsWrapper.html(items);
+
+                pages += '<li><a href="javascript:query(1);">首页</a></li>' +
+                '<li><a href="javascript:query('+ data.prePage + ');">上一页</a></li>' +
+                '<li><a href="javascript:query('+ data.currentPage + ');" class="current">'+data.currentPage+'</a></li>';
+                for(index = data.currentPage+1;index < data.totalPage && index < data.currentPage+4; index++){
+                    pages += '<li><a href="javascript:query('+index+');">'+index+'</a></li>';
+                }
+
+                pages += '<li><a href="javascript:query('+ data.nextPage +');">下一页</a></li>' +
+                '<li><a href="javascript:query('+ data.totalPage +');">尾页</a></li>';
+
+                pagenation.html(pages);
+            },
+            error:function(){
+                alert("加载失败...");
+            }
+        });
+    }
+    query(1)
+</script>
+</body>
+</html>
