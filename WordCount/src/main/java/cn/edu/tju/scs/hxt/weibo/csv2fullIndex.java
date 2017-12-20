@@ -111,6 +111,9 @@ public class csv2fullIndex {
             //4,获取字段的内容
             String word = words[0];
             String content = words[1];
+            String[] fields = StringUtils.split(content,"\",\"");
+            String indexString = fields[2] + fields[9];
+
             long count = Long.parseLong(filds[1]);
 
             int wordPos = content.indexOf(word);
@@ -125,8 +128,12 @@ public class csv2fullIndex {
             }
             positions += ">";
 
-            //5.将字段的内容重新组合进行输出 输出格式为  google [content]-->2,<position>;
-            context.write(new Text(word), new Text(content+"-->" + num + "," + positions));
+            // tf_value
+            float tf = (float) num / indexString.length();
+            float tf2 = (float)(Math.round(tf * 10000)) / 10000;
+
+            //5.将字段的内容重新组合进行输出 输出格式为  google [content]-->2,<position>,tf_value;
+            context.write(new Text(word), new Text(content+"-->" + num + "," + positions + "," + tf2));
         }
     }
     public static class ReducerTwo extends Reducer<Text, Text,Text,Text>
@@ -140,7 +147,7 @@ public class csv2fullIndex {
             for(Text value:values)
             {
                 //2将集合中的数据取出 进行链接
-                link+=value+" ";
+                link+=value  +" ";
             }
             //3输出数据 输出格式为 google a.txt-->2 b.txt-->1
             context.write(key,new Text(link));
