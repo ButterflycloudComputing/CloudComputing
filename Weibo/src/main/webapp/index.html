@@ -51,6 +51,23 @@
             height:50px;
         }
 
+        .btn-search{
+            width:30px;
+            line-height: 30px;
+            height:30px;
+            font-size: 30px;
+            color:black;
+        }
+
+        #search-btn{
+            margin-left: -35px;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        .btn-search:hover{
+            color: #fa7d3c;
+        }
 
         @media screen and (max-width: 1300px) { /*当屏幕尺寸小于1300px时，应用下面的CSS样式*/
             .nav-top #search{
@@ -62,7 +79,7 @@
                 height: 28px;
                 line-height: 28px;
                 width:200px;
-                margin:5px 60px 0 0;
+                margin:5px 10px 0 0;
             }
         }
 
@@ -76,7 +93,7 @@
                 height: 28px;
                 line-height: 28px;
                 width:350px;
-                margin:5px 60px 0 0;
+                margin:5px 10px 0 0;
             }
         }
 
@@ -92,6 +109,7 @@
         .nav-top a:hover{
             color: #ff6412;
         }
+
         /*nav header end*/
 
         /*main*/
@@ -216,15 +234,17 @@
         /* main content list end*/
 
     </style>
+
+    <link href="font/css/font-awesome.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div class="nav-top">
     <a id="logo"></a>
     <ul>
         <li id="search">
-            <form><label for="search_input"></label><input id="search_input" name="search" placeholder="大家正在搜：陈赫"/></form>
+            <form><label for="search-input"></label><input id="search-input" name="search" placeholder="大家正在搜：陈赫"/><a id="search-btn"><span class="btn-search fa fa-search"></span></a></form>
         </li>
-        <li><a href="#">我的读书笔记</a></li>
+        <!--<li><a href="#">我的读书笔记</a></li>-->
         <!--<li><a href="#">视频</a></li>-->
         <!--<li><a href="#">发现</a></li>-->
         <!--<li><a href="#">游戏</a></li>-->
@@ -236,7 +256,7 @@
 <div class="main">
     <div class="nav">
         <ul>
-            <li><a href="http://www.baidu.com">2017-02-17</a></li>
+            <li><a href="http://www.baidu.com">2017-12-20</a></li>
             <li><a href="http://www.baidu.com">特别关注</a></li>
             <li><a href="http://www.baidu.com">名人明星</a></li>
             <li><a href="http://www.baidu.com">同学</a></li>
@@ -246,31 +266,10 @@
 
     <div class="right">
         <div>
-            圣诞节福利卡手机费送到房间爱离开时间的福利卡设计福利卡上的记录反馈说
+            Ugly Search System
         </div>
     </div>
     <div class="lists">
-        <div class="item">
-            <img class="header" src="images/header.png"/>
-            <h4>董敏笛子</h4>
-            <span> 今天 11:02 来自 网易云音乐 </span>
-            <p>
-                倘若你曾思索过自己的坎坷人生，又抑或尝试去探寻自己的前世来生？不妨沏一壶芽色的清茶，静静的沉浸在这《半壶纱》的禅意之中，想象着世间曾有过一个这样的自己……
-                <br/>
-                “半壶青茗了相思，一袭轻纱遮红尘……” 分享单曲O网页链接（@网易云音乐）
-            </p>
-        </div>
-
-        <div class="item">
-            <img class="header" src="images/header.png"/>
-            <h4>董敏笛子</h4>
-            <span> 今天 11:02 来自 网易云音乐 </span>
-            <p>
-                倘若你曾思索过自己的坎坷人生，又抑或尝试去探寻自己的前世来生？不妨沏一壶芽色的清茶，静静的沉浸在这《半壶纱》的禅意之中，想象着世间曾有过一个这样的自己……
-                <br/>
-                “半壶青茗了相思，一袭轻纱遮红尘……” 分享单曲O网页链接（@网易云音乐）
-            </p>
-        </div>
 
         <div class="item">
             <img class="header" src="images/header.png"/>
@@ -323,7 +322,6 @@
     var items = "";
     var pages = "";
 
-
     function query(keyword,pageNum){
         //var formParam = $("#form1").serialize();//序列化表格内容为字符串
         $.ajax({
@@ -334,7 +332,9 @@
             },
             url:pageContext.base+pageContext.url + "/search",
             success: function(data,textStatus){
+                var _keyword = '\'' + keyword + '\'';
                 data = data.data;
+
                 items = "";
                 pages = "";
                 for(index = 0; index < data.results.length;index++){
@@ -359,16 +359,16 @@
 
                 itemsWrapper.html(items);
 
-                pages += '<li><a href="javascript:query(1);">首页</a></li>';
+                pages += '<li><a href="javascript:query('+_keyword+',1);">首页</a></li>';
                 if (data.currentPage > 1)
-                    pages += '<li><a href="javascript:query('+ (data.currentPage-1) + ');">上一页</a></li>';
-                pages += '<li><a href="javascript:query('+ data.currentPage + ');" class="current">'+data.currentPage+'</a></li>';
+                    pages += '<li><a href="javascript:query('+ _keyword +','+ (data.currentPage-1) + ');">上一页</a></li>';
+                pages += '<li><a href="javascript:query('+ _keyword +','+ data.currentPage+');" class="current">'+data.currentPage+'</a></li>';
                 for(index = data.currentPage+1;index < data.pageCount && index < data.currentPage+4; index++){
-                    pages += '<li><a href="javascript:query('+index+');">'+index+'</a></li>';
+                    pages += '<li><a href="javascript:query('+_keyword+","+index+');">'+index+'</a></li>';
                 }
                 if (data.currentPage + 1 < data.pageCount)
-                    pages += '<li><a href="javascript:query('+ (data.currentPage + 1) +');">下一页</a></li>';
-                pages += '<li><a href="javascript:query('+ data.pageCount +');">尾页</a></li>';
+                    pages += '<li><a href="javascript:query('+_keyword+"," +(data.currentPage + 1) +');">下一页</a></li>';
+                pages += '<li><a href="javascript:query('+_keyword+","+ data.pageCount +');">尾页</a></li>';
 
                 pagenation.html(pages);
             },
@@ -377,7 +377,37 @@
             }
         });
     }
-    query(1)
+    query("鼓掌",1);
+
+    $("#search-input").keypress(function(e){
+        // 回车键事件
+        if(e.which == 13) {
+            $("#search-btn").find(".fa.fa-search").css("color","#fa7d3c");
+            var value = $(this).val();
+            query(value, 1);
+            return false;
+        }
+    });
+
+    // 顶栏搜索按钮，输入框
+    $("#search-input").on("keyup",function(e){
+        // 回车键事件
+        if(e.which == 13) {
+            $("#search-btn").find(".fa.fa-search").css("color","black");
+            return false;
+        }
+    });
+
+    // 顶栏搜索按钮
+    $("#search-btn").on("mousedown",function(e){
+        var $this = $(this);
+        $this.find(".fa.fa-search").css("color","#fa7d3c");
+    }).on("mouseup",function(e){
+        var $this = $(this);
+        var value = $("#search-input").val();
+        $this.find(".fa.fa-search").css("color","black");
+        query(value, 1);
+    });
 </script>
 </body>
 </html>

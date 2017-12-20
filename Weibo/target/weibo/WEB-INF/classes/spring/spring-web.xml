@@ -13,6 +13,9 @@
         http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
          <!--配置Spring MVC-->
+
+         <context:property-placeholder location="classpath:config.properties"/>
+
          <!--1:开启Spring MVC 注解模式-->
          <!-- 简化配置：
                   （1）自动注册 DefaultAnnotationHandlerMapping，AnnotationMethodHandlerAdapter
@@ -35,6 +38,15 @@
               <property name="prefix" value="/WEB-INF/jsp/"/>
               <property name="suffix" value=".jsp"/>
           </bean>
+
+    <bean class="cn.edu.tju.scs.hxt.WordsTable" init-method="init">
+        <property name="indexFile" value="${config.indexFile}"/>
+    </bean>
+
+    <bean class="cn.edu.tju.scs.hxt.Config">
+        <property name="inputFile" value="${config.inputFile}"/>
+        <property name="indexFile" value="${config.indexFile}"/>
+    </bean>
 
           <!--4：扫描web相关的bean-->
           <context:component-scan base-package="cn.edu.tju.scs.hxt.web"/>

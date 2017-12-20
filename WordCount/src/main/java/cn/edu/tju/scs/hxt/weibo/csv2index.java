@@ -37,13 +37,13 @@ public class csv2index {
             // 需求： 将 hello world  --》 hello--a.txt 1  world-->a.txt  1
             //1.取出一行数据 转为字符串
             String line = value.toString();
-            System.out.println("string: "+line);
+//            System.out.println("string: "+line);
             //line byte size
             int lineLength = line.getBytes("utf-8").length;
             //2.将这一行数据按照指定的分割符进行第一次切分
             String[] fields = StringUtils.split(line,"\",\"");
             String indexString = fields[2] + fields[9];
-            System.out.println(indexString);
+//            System.out.println(indexString);
 
 //            String[] words = StringUtils.split(line," ");
             //3.获取读取的文件所属的文件切片
@@ -78,7 +78,7 @@ public class csv2index {
             ts.reset();
             //7，封装数据输出格式为 k: hello-->[offset:length] v:1
             while (ts.incrementToken()) {
-                System.out.println(ch.toString());
+//                System.out.println(ch.toString());
                 String location = "[" + key.toString() + ":" + lineLength + "]";
                 context.write(new Text(ch.toString()+"-->"+location), new LongWritable(1));
             }
