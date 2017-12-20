@@ -16,14 +16,17 @@ import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.FileSplit;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.CharArraySet;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
+import org.apache.lucene.index.IndexWriterConfig;
 
 import java.io.IOException;
 import java.util.Iterator;
-
+import com.chenlb.mmseg4j.analysis.ComplexAnalyzer;
 
 public class IndexOne_csv {
 
@@ -44,7 +47,7 @@ public class IndexOne_csv {
             String indexString = fields[2] + fields[9];
             System.out.println(indexString);
 
-//            String[] words = StringUtils.split(line," ");
+            //            String[] words = StringUtils.split(line," ");
             //3.获取读取的文件所属的文件切片
             Configuration conf = new Configuration();
             FileSystem fs  = FileSystem.get(conf);
@@ -54,23 +57,27 @@ public class IndexOne_csv {
             String filename = inputSplit.getPath().getName();
             //6.讲数据进行传递
 
-            String[] self_stop_words = {  "了",  "，",  "：", "," };
-            CharArraySet cas = new CharArraySet(0, true);
-            for (int i = 0; i < self_stop_words.length; i++) {
-                cas.add(self_stop_words[i]);
-            }
-            // 加入系统默认停用词
-            Iterator<Object> itor = SmartChineseAnalyzer.getDefaultStopSet().iterator();
-            while (itor.hasNext()) {
-                cas.add(itor.next());
-            }
+//            String[] self_stop_words = {  "了",  "，",  "：", "," };
+//            CharArraySet cas = new CharArraySet(0, true);
+//            for (int i = 0; i < self_stop_words.length; i++) {
+//                cas.add(self_stop_words[i]);
+//            }
+//            // 加入系统默认停用词
+//            Iterator<Object> itor = SmartChineseAnalyzer.getDefaultStopSet().iterator();
+//            while (itor.hasNext()) {
+//                cas.add(itor.next());
+//            }
 
             // TODO: 可以更换更 NB 的分词器
             // 中英文混合分词器(其他几个分词器对中文的分析都不行)
-            SmartChineseAnalyzer sca = new SmartChineseAnalyzer(cas);
+            Analyzer ay = new ComplexAnalyzer();
+
+//            SmartChineseAnalyzer sca = new SmartChineseAnalyzer(cas);
 
             // TODO: TokenStream 啥意思？
-            TokenStream ts = sca.tokenStream("field", indexString);
+//            TokenStream ts = sca.tokenStream("field", indexString);
+            TokenStream ts = ay.tokenStream("field", indexString);
+
             // TODO: CharTermAttribute 又是啥意思？
             CharTermAttribute ch = ts.addAttribute(CharTermAttribute.class);
 

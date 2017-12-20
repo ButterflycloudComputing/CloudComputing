@@ -1,9 +1,5 @@
 package cn.edu.tju.scs.hxt.weibo;
 
-/**
- * Created by Takahashi on 2017/12/20.
- */
-
 import com.chenlb.mmseg4j.analysis.ComplexAnalyzer;
 import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.conf.Configuration;
@@ -16,21 +12,24 @@ import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.FileSplit;
-import org.apache.hadoop.mapreduce.lib.input.SequenceFileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
-import org.apache.hadoop.mapreduce.lib.output.SequenceFileOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.CharArraySet;
 import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.Random;
 
-public class csv2index {
+/**
+ * Created by Takahashi on 2017/12/20.
+ */
+
+/**
+ * 索引保留完整微博内容，输出格式为  word [content]-->time,<position>
+ */
+public class csv2fullIndex {
+
     public static class MapOne extends Mapper<LongWritable, Text,Text,LongWritable>
     {
         @Override
@@ -39,13 +38,13 @@ public class csv2index {
             // 需求： 将 hello world  --》 hello--a.txt 1  world-->a.txt  1
             //1.取出一行数据 转为字符串
             String line = value.toString();
-//            System.out.println("string: "+line);
+            System.out.println("string: "+line);
             //line byte size
             int lineLength = line.getBytes("utf-8").length;
             //2.将这一行数据按照指定的分割符进行第一次切分
             String[] fields = StringUtils.split(line,"\",\"");
             String indexString = fields[2] + fields[9];
-//            System.out.println(indexString);
+            System.out.println(indexString);
 
 //            String[] words = StringUtils.split(line," ");
             //3.获取读取的文件所属的文件切片
@@ -63,11 +62,12 @@ public class csv2index {
             CharTermAttribute ch = ts.addAttribute(CharTermAttribute.class);
 
             ts.reset();
-            //7，封装数据输出格式为 k: hello-->[offset:length] v:1
+            //7，封装数据输出格式为 k: hello-->[content] v:1
             while (ts.incrementToken()) {
-//                System.out.println(ch.toString());
+                System.out.println(ch.toString());
+                String content = "[" + line + ":" + lineLength + "]";
                 String location = "[" + key.toString() + ":" + lineLength + "]";
-                context.write(new Text(ch.toString()+"-->"+location), new LongWritable(1));
+                context.write(new Text(ch.toString()+"-->"+content), new LongWritable(1));
             }
 
 
@@ -80,7 +80,7 @@ public class csv2index {
         protected void reduce(Text key, Iterable<LongWritable> values,
                               Context context) throws IOException, InterruptedException {
 
-            //1.reduce 从map端接受来的数据格式为 hello-->a.txt 1,1,1
+            //1.reduce 从map端接受来的数据格式为 hello-->[content] 1,1,1
             //2,定义for循环将values集合中的数据进行累加
             long count = 0;
             for(LongWritable value:values)
@@ -95,7 +95,7 @@ public class csv2index {
     // google-->c.txt1
     // hadoop-->a.txt2
     //以上形式为上一次mapreduce的输出形式 要作为这一次maprede的map的输入形式
-    // 经过map()操作后 输出形式为 google c.txt-->1
+    // 经过map()操作后 输出形式为 google [content]-->1,<position>
     public static class MapTwo extends Mapper<LongWritable,Text,Text,Text>
     {
         @Override
@@ -110,10 +110,23 @@ public class csv2index {
             String[] words = StringUtils.split(filds[0],"-->");
             //4,获取字段的内容
             String word = words[0];
-            String filename=words[1];
+            String content = words[1];
             long count = Long.parseLong(filds[1]);
-            //5.将字段的内容重新组合进行输出 输出格式为  google a.txt-->2;
-            context.write(new Text(word), new Text(filename+"-->"+count));
+
+            int wordPos = content.indexOf(word);
+            String positions = "<";
+            int num = 0;
+            while(wordPos != -1){
+                if(num != 0)
+                    positions += ":";
+                positions += wordPos;
+                wordPos = content.indexOf(word, wordPos + 1);
+                num++;
+            }
+            positions += ">";
+
+            //5.将字段的内容重新组合进行输出 输出格式为  google [content]-->2,<position>;
+            context.write(new Text(word), new Text(content+"-->" + num + "," + positions));
         }
     }
     public static class ReducerTwo extends Reducer<Text, Text,Text,Text>
@@ -151,7 +164,7 @@ public class csv2index {
 
         Job job = Job.getInstance(conf, "mr_one");
         //2.指定jar包的类
-        job.setJarByClass(csv2index.class);
+        job.setJarByClass(csv2fullIndex.class);
         //3.指定map（）的类
         job.setMapperClass(MapOne.class);
         //4.指定reducer()的类
@@ -184,7 +197,7 @@ public class csv2index {
         job.waitForCompletion(true);
 
         Job second_job = Job.getInstance(conf, "mr_two");
-        second_job.setJarByClass(csv2index.class);
+        second_job.setJarByClass(csv2fullIndex.class);
         second_job.setMapperClass(MapTwo.class);
         second_job.setReducerClass(ReducerTwo.class);
 //        second_job.setInputFormatClass(SequenceFileInputFormat.class);
@@ -204,5 +217,4 @@ public class csv2index {
 
         System.exit(second_job.waitForCompletion(true)?0:1);
     }
-
 }
