@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>读书笔记</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        /*body*/
+        body{
+            background-color: #B4DAF0;
+        }
+        /*body end*/
+
+        /*nav header*/
+        .nav-top{
+            background-color: white;
+            height:50px;
+            line-height: 50px;
+            width:100%;
+            overflow: hidden;
+            position: fixed;
+            top:0;
+            left: 0;
+            opacity: 0.98;
+        }
+        .nav-top #logo{
+            display: inline-block;
+            width:170px;
+            float: left;
+            text-align: center;
+            background-image: url(images/logo.jpg);
+            background-repeat: no-repeat;
+            background-size: 70%;
+            background-position: center;
+            margin-top:10px;
+        }
+
+        .nav-top > ul{
+            list-style: none;
+            width: 950px;
+            margin: 0 auto;
+            height: 50px;
+            /*margin-left: 200px;*/
+        }
+        .nav-top li{
+            float: left;
+            margin:0 10px;
+            height:50px;
+        }
+
+        .btn-search{
+            width:30px;
+            line-height: 30px;
+            height:30px;
+            font-size: 30px;
+            color:black;
+        }
+
+        #search-btn{
+            margin-left: -35px;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        .btn-search:hover{
+            color: #fa7d3c;
+        }
+
+        @media screen and (max-width: 1300px) { /*当屏幕尺寸小于1300px时，应用下面的CSS样式*/
+            .nav-top #search{
+                margin-left: 150px;
+            }
+            .nav-top input{
+                /*margin-top: 5px;*/
+                display: inline-block;
+                height: 28px;
+                line-height: 28px;
+                width:200px;
+                margin:5px 10px 0 0;
+            }
+        }
+
+        @media screen and (min-width: 1300px) { /*当屏幕尺寸大于1300px时，应用下面的CSS样式*/
+            .nav-top #search{
+                margin-left: 0;
+            }
+            .nav-top input{
+                /*margin-top: 5px;*/
+                display: inline-block;
+                height: 28px;
+                line-height: 28px;
+                width:350px;
+                margin:5px 10px 0 0;
+            }
+        }
+
+        .nav-top a{
+            display: block;
+            height:30px;
+            line-height: 30px;
+            text-decoration:none;
+            font-weight: 500;
+            color: #585858;
+            margin-top:10px;
+        }
+        .nav-top a:hover{
+            color: #ff6412;
+        }
+
+        /*nav header end*/
+
+        /*main*/
+        .main{
+            width:950px;
+            margin:50px auto;
+        }
+
+        /*main left nav*/
+        .nav{
+            width:150px;
+            float: left;
+            margin-top: 10px;
+            background-color: #93C5E2;
+            text-indent: 1em;
+            line-height: 2em;
+            height: 800px;
+            /*opacity: 0.8;*/
+        }
+
+        .nav>ul{
+            list-style: none;
+        }
+
+        .nav a{
+            text-decoration:none;
+            color:white;
+            display: block;
+        }
+
+        .nav a:hover{
+            background-color: #B4DAF0;
+        }
+        /*main left nav end*/
+
+        /* main content right*/
+        .main > .right{
+            float: right;
+            width:270px;
+            margin-top: 10px;
+            background-color: #fff;
+            height: 800px;
+            padding:10px;
+        }
+        /* main content right end*/
+
+        /* main content list*/
+        .main>.lists{
+            width: 500px;
+            overflow: hidden;
+            margin-left: 150px;
+        }
+
+        .item2{
+            border: 1px dashed gray;
+        }
+
+        p.from{
+            color: red;
+        }
+
+        .item{
+            background-color: #fff;
+            padding:10px;
+            margin-top: 10px;
+        }
+
+        .item > .header{
+            float: left;
+            width:50px;
+            height:50px;
+        }
+
+        .item > h4{
+            margin-left: 60px;
+        }
+
+        .item > span{
+            font-size: 12px;
+            color: #a4a4a4;
+            margin-left: 10px;
+        }
+
+        .item > p{
+            margin-left: 60px;
+            font-size: 14px;
+            line-height: 22px;
+            /*text-align: justify;*/
+        }
+
+        /* 分页 */
+        .pagenation-wrapper{
+            padding:20px 0 10px 0;
+        }
+
+        .pagenation{
+            list-style: none;
+            width: 500px;
+            margin-left: 180px;
+        }
+
+        .pagenation li{
+            float:left;
+        }
+
+        .pagenation a{
+            text-decoration: none;
+            display: inline-block;
+            color:black;
+            height:35px;
+            line-height: 35px;
+            text-align: center;
+            padding:0 14px;
+            background-color: #ffffff;
+            margin-right: 1px;
+            font-size: 15px;
+        }
+
+        .pagenation a.current{
+            background-color: #93C5E2;
+        }
+        /* main content list end*/
+
+    </style>
+
+    <link href="font/css/font-awesome.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div class="nav-top">
+    <a id="logo"></a>
+    <ul>
+        <li id="search">
+            <form><label for="search-input"></label><input id="search-input" name="search" placeholder="大家正在搜：陈赫"/><a id="search-btn"><span class="btn-search fa fa-search"></span></a></form>
+        </li>
+        <!--<li><a href="#">我的读书笔记</a></li>-->
+        <!--<li><a href="#">视频</a></li>-->
+        <!--<li><a href="#">发现</a></li>-->
+        <!--<li><a href="#">游戏</a></li>-->
+        <!--<li><a href="#">不怕老婆的灰太狼</a></li>-->
+    </ul>
+</div>
+
+
+<div class="main">
+    <div class="nav">
+        <ul>
+            <li><a href="http://www.baidu.com">2017-12-20</a></li>
+            <li><a href="http://www.baidu.com">特别关注</a></li>
+            <li><a href="http://www.baidu.com">名人明星</a></li>
+            <li><a href="http://www.baidu.com">同学</a></li>
+            <li><a href="http://www.baidu.com">老乡</a></li>
+        </ul>
+    </div>
+
+    <div class="right">
+        <div>
+            Ugly Search System
+        </div>
+    </div>
+    <div class="lists">
+
+        <div class="item">
+            <img class="header" src="images/header.png"/>
+            <h4>董敏笛子</h4>
+            <span> 今天 11:02 来自 网易云音乐 </span>
+            <p>
+                倘若你曾思索过自己的坎坷人生，又抑或尝试去探寻自己的前世来生？不妨沏一壶芽色的清茶，静静的沉浸在这《半壶纱》的禅意之中，想象着世间曾有过一个这样的自己……
+                <br/>
+                “半壶青茗了相思，一袭轻纱遮红尘……” 分享单曲O网页链接（@网易云音乐）
+            </p>
+
+
+            <div class="item item2">
+                <p class="from">转自</p>
+                <img class="header" src="images/header.png"/>
+                <h4>董敏笛子</h4>
+                <span> 今天 11:02 来自 网易云音乐 </span>
+                <p>
+                    倘若你曾思索过自己的坎坷人生，又抑或尝试去探寻自己的前世来生？不妨沏一壶芽色的清茶，静静的沉浸在这《半壶纱》的禅意之中，想象着世间曾有过一个这样的自己……
+                    <br/>
+                    “半壶青茗了相思，一袭轻纱遮红尘……” 分享单曲O网页链接（@网易云音乐）
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="pagenation-wrapper">
+        <ul class="pagenation">
+            <li><a href="#">首页</a></li>
+            <li><a href="#">上一页</a></li>
+            <li><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">下一页</a></li>
+            <li><a href="#">尾页</a></li>
+        </ul>
+    </div>
+
+
+</div>
+
+<script type="text/javascript" src="jquery1.9.0.js"></script>
+<script type="text/javascript" src="Context.js"></script>
+<script>
+    var index = 0;
+    var type = 1;
+    var itemsWrapper = $(".lists");
+    var pagenation = $(".pagenation");
+    var items = "";
+    var pages = "";
+
+    function query(keyword,pageNum){
+        //var formParam = $("#form1").serialize();//序列化表格内容为字符串
+        $.ajax({
+            type: "GET",
+            data:{
+                "keyword": keyword,
+                "pageNum": pageNum
+            },
+            url:pageContext.base+pageContext.url + "/search",
+            success: function(data,textStatus){
+                var _keyword = '\'' + keyword + '\'';
+                data = data.data;
+
+                items = "";
+                pages = "";
+                for(index = 0; index < data.results.length;index++){
+                    items += '<div class="item">'+
+                    '<img class="header" src="'+pageContext.base+pageContext.url+'/images/header.png"/>'+
+                    '<h4>'+(data.results[index].userId).substring(0,10)+(data.results[index].userId.length > 10?'......':'')+'</h4>'+
+                    '<span>'+data.results[index].createTime+' 转发 '+data.results[index].repostsCount+ ' 点赞 '+data.results[index].attitudesCount+ ' 评论 '+data.results[index].commentsCount+ '</span>'+
+                    '<p>'+data.results[index].text+'</p>';
+
+
+                    if(data.results[index].fromId){
+                        items += '<div class="item item2">'+
+                        '<p class="from">转自</p>'+
+                        '<img class="header" src="'+pageContext.base+pageContext.url+'/images/header.png"/>'+
+                        '<h4>'+(data.results[index].fromUser).substring(0,10)+(data.results[index].userId.length > 10?'......':'')+'</h4>'+
+                        '<span>'+data.results[index].fromCreateTime+' 转发 '+data.results[index].fromRepostsCount+ ' 点赞 '+data.results[index].fromAttitudesCount+ ' 评论 '+data.results[index].fromCommentsCount+ '</span>'+
+                        '<p>'+data.results[index].fromText+'</p>'
+                        + '</div>';
+                    }
+                    items += '</div>';
+                }
+
+                itemsWrapper.html(items);
+
+                pages += '<li><a href="javascript:query('+_keyword+',1);">首页</a></li>';
+                if (data.currentPage > 1)
+                    pages += '<li><a href="javascript:query('+ _keyword +','+ (data.currentPage-1) + ');">上一页</a></li>';
+                pages += '<li><a href="javascript:query('+ _keyword +','+ data.currentPage+');" class="current">'+data.currentPage+'</a></li>';
+                for(index = data.currentPage+1;index < data.pageCount && index < data.currentPage+4; index++){
+                    pages += '<li><a href="javascript:query('+_keyword+","+index+');">'+index+'</a></li>';
+                }
+                if (data.currentPage + 1 < data.pageCount)
+                    pages += '<li><a href="javascript:query('+_keyword+"," +(data.currentPage + 1) +');">下一页</a></li>';
+                pages += '<li><a href="javascript:query('+_keyword+","+ data.pageCount +');">尾页</a></li>';
+
+                pagenation.html(pages);
+            },
+            error:function(){
+                alert("加载失败...");
+            }
+        });
+    }
+    query("鼓掌",1);
+
+    $("#search-input").keypress(function(e){
+        // 回车键事件
+        if(e.which == 13) {
+            $("#search-btn").find(".fa.fa-search").css("color","#fa7d3c");
+            return false;
+        }
+    });
+
+    // 顶栏搜索按钮，输入框
+    $("#search-input").on("keyup",function(e){
+        // 回车键事件
+        if(e.which == 13) {
+            $("#search-btn").find(".fa.fa-search").css("color","black");
+            var value = $(this).val();
+            query(value, 1);
+            return false;
+        }
+    });
+
+    // 顶栏搜索按钮
+    $("#search-btn").on("mousedown",function(e){
+        var $this = $(this);
+        $this.find(".fa.fa-search").css("color","#fa7d3c");
+    }).on("mouseup",function(e){
+        var $this = $(this);
+        var value = $("#search-input").val();
+        $this.find(".fa.fa-search").css("color","black");
+        query(value, 1);
+    });
+</script>
+</body>
+</html>
