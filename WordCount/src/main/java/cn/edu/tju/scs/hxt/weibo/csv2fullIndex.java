@@ -126,7 +126,7 @@ public class csv2fullIndex {
             positions += ">";
 
             //5.将字段的内容重新组合进行输出 输出格式为  google [content]-->2,<position>;
-            context.write(new Text(word), new Text(content+"-->" + count + "," + positions));
+            context.write(new Text(word), new Text(content+"-->" + num + "," + positions));
         }
     }
     public static class ReducerTwo extends Reducer<Text, Text,Text,Text>
