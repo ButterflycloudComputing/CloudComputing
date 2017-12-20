@@ -383,8 +383,6 @@
         // 回车键事件
         if(e.which == 13) {
             $("#search-btn").find(".fa.fa-search").css("color","#fa7d3c");
-            var value = $(this).val();
-            query(value, 1);
             return false;
         }
     });
@@ -394,6 +392,8 @@
         // 回车键事件
         if(e.which == 13) {
             $("#search-btn").find(".fa.fa-search").css("color","black");
+            var value = $(this).val();
+            query(value, 1);
             return false;
         }
     });
