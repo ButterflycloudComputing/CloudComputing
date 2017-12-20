@@ -44,7 +44,9 @@ public class csv2index {
             int lineLength = line.getBytes("utf-8").length;
             //2.将这一行数据按照指定的分割符进行第一次切分
             String[] fields = StringUtils.split(line,"\",\"");
-            String indexString = fields[2] + fields[9];
+            String subString1 = fields[2];
+            String subString2 = fields[9];
+            String indexString = subString1 + subString2;
             System.out.println(indexString);
 
 //            String[] words = StringUtils.split(line," ");
@@ -65,7 +67,9 @@ public class csv2index {
             ts.reset();
             //7，封装数据输出格式为 k: hello-->[offset:length] v:1
             while (ts.incrementToken()) {
+
                 System.out.println(ch.toString());
+
                 String location = "[" + key.toString() + ":" + lineLength + "]";
                 context.write(new Text(ch.toString()+"-->"+location), new LongWritable(1));
             }
@@ -112,6 +116,8 @@ public class csv2index {
             String word = words[0];
             String filename=words[1];
             long count = Long.parseLong(filds[1]);
+
+
             //5.将字段的内容重新组合进行输出 输出格式为  google a.txt-->2;
             context.write(new Text(word), new Text(filename+"-->"+count));
         }
